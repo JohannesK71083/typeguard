@@ -1465,6 +1465,7 @@ check_variable_assignment
             )
         )
         TypeguardTransformer().visit(node)
+        print(unparse(node))
         assert (
             unparse(node)
             == dedent(
@@ -1475,7 +1476,7 @@ check_variable_assignment
                 def foo() -> None:
                     memo = TypeCheckMemo(globals(), locals())
                     x: int
-                    if (x := check_variable_assignment(otherfunc(), 'x', int, \
+                    if (x := check_variable_assignment(otherfunc(), [[('x', int)]], \
 memo)):
                         pass
                 """
@@ -1504,7 +1505,7 @@ check_variable_assignment
                 def foo(x: int) -> None:
                     memo = TypeCheckMemo(globals(), locals())
                     check_argument_types('foo', {'x': (x, int)}, memo)
-                    if (x := check_variable_assignment(otherfunc(), 'x', int, memo)):
+                    if (x := check_variable_assignment(otherfunc(), [[('x', int)]], memo)):
                         pass
                 """
             ).strip()
